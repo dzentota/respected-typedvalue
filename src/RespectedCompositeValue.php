@@ -5,8 +5,15 @@ declare(strict_types=1);
 namespace dzentota\TypedValue;
 use Respect\Validation\Validator;
 
+/**
+ * Trait RespectedCompositeValue
+ * @package dzentota\TypedValue
+ */
 trait RespectedCompositeValue
 {
+    /**
+     * @var
+     */
     private static $fieldDefinitions;
 
     /**
@@ -45,6 +52,11 @@ trait RespectedCompositeValue
         }, $this->propertiesToArray());
     }
 
+    /**
+     * @param $value
+     * @return Typed
+     * @throws \ReflectionException
+     */
     public static function fromNative($value): Typed
     {
         if (!is_array($value)) {
@@ -71,6 +83,12 @@ trait RespectedCompositeValue
         return $object;
     }
 
+    /**
+     * @param $value
+     * @param Typed|null $typed
+     * @return bool
+     * @throws \ReflectionException
+     */
     public static function tryParse($value, ?Typed &$typed): bool
     {
         $reflectionClass = new \ReflectionClass(static::class);
