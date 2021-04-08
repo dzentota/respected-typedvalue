@@ -7,7 +7,6 @@ namespace tests\dzentota\TypedValue;
 use dzentota\TypedValue\RespectedTypedValue;
 use dzentota\TypedValue\Typed;
 use PHPUnit\Framework\TestCase;
-use Respect\Validation\Validatable;
 use Respect\Validation\Validator;
 
 final class RespectedCompositeValueTest extends TestCase
@@ -50,7 +49,7 @@ final class RespectedCompositeValueTest extends TestCase
 
 final class RespectedCompositeValue implements Typed
 {
-    use \dzentota\TypedValue\RespectedCompositeValue;
+    use \dzentota\TypedValue\CompositeValue;
 
     private RespectedEmail $email;
     private RespectedUrl $url;
@@ -60,7 +59,7 @@ class RespectedEmail implements Typed
 {
     use RespectedTypedValue;
 
-    public static function getValidator(): Validatable
+    public static function getValidator(): Validator
     {
         return Validator::create()->notEmpty()->email();
     }
@@ -70,7 +69,7 @@ class RespectedUrl implements Typed
 {
     use RespectedTypedValue;
 
-    public static function getValidator(): Validatable
+    public static function getValidator(): Validator
     {
         return Validator::create()->notEmpty()->url();
     }

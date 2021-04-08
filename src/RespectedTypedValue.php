@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace dzentota\TypedValue;
 
-use Respect\Validation\Validatable;
+use Respect\Validation\Exceptions\NestedValidationException;
+use Respect\Validation\Validator;
 
 /**
  * Trait RespectedTypedValue
@@ -13,26 +14,22 @@ trait RespectedTypedValue
 {
     use TypedValue;
 
-    /**
-     * @param $value
-     * @return bool
-     */
-    public static function validate($value): bool
+    public static function validate($value): ValidationResult
     {
-        return static::getValidator()->validate($value);
+        $result = new ValidationResult();
+        try {
+            static::getValidator()->assert($value);
+        } catch (NestedValidationException $exception) {
+            foreach ($exception->getMessages() as $name => $message) {
+                $result->addError($message, $name);
+            }
+        }
+        return $result;
     }
 
     /**
-     * @return Validatable
+     * @return Validator
      */
-    abstract public static function getValidator(): Validatable;
-
-    /**
-     * @param $value
-     */
-    public static function assert($value)
-    {
-        static::getValidator()->assert($value);
-    }
+    abstract public static function getValidator(): Validator;
 
 }

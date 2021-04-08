@@ -8,8 +8,8 @@ namespace tests\dzentota\TypedValue;
 
 use dzentota\TypedValue\RespectedTypedValue;
 use dzentota\TypedValue\Typed;
+use dzentota\TypedValue\ValidationException;
 use PHPUnit\Framework\TestCase;
-use Respect\Validation\Validatable;
 use Respect\Validation\Validator;
 
 final class RespectedTypedValueTest extends TestCase
@@ -38,7 +38,7 @@ final class RespectedTypedValueTest extends TestCase
 
     public function test_from_native_throws_exception_when_given_non_string()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(ValidationException::class);
         RespectedStringValue::fromNative(1000);
     }
 
@@ -54,7 +54,7 @@ final class RespectedStringValue implements Typed
 {
     use RespectedTypedValue;
 
-    public static function getValidator(): Validatable
+    public static function getValidator(): Validator
     {
         return Validator::create()->notEmpty()->stringType();
     }
